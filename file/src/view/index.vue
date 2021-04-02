@@ -2,11 +2,15 @@
 <template>
   <div class="tabbox">
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="上传CSV 酷宅云" name="1" class='eltab'>
+      <el-tab-pane label="上传CSV 酷宅云" name="1" class="eltab">
         <HelloWorld />
       </el-tab-pane>
-      <el-tab-pane label="上传表格小匠" name="2" class='eltab'> <Xlvue /></el-tab-pane>
-      <el-tab-pane label="上传 xls表格" name="3" class='eltab'> <Xlsvue /></el-tab-pane>
+      <el-tab-pane label="上传表格小匠" name="2" class="eltab">
+        <Xjlist
+      /></el-tab-pane>
+      <el-tab-pane label=" xls表格" name="4" class="eltab">
+        <Xls
+      /></el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -15,12 +19,12 @@
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
 import HelloWorld from "../components/HelloWorld";
-import Xlvue from "../components/xlvue";
-import Xlsvue from "../components/xlsvue";
+import Xjlist from "../components/Xjlist";
+import Xls from "../components/xls";
 export default {
   name: "",
   //import引入的组件需要注入到对象中才能使用
-  components: { HelloWorld, Xlvue,Xlsvue },
+  components: { HelloWorld, Xjlist,   Xls },
   props: [],
   data() {
     //这里存放数据
@@ -53,14 +57,17 @@ export default {
 </script>
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
-.tabbox{
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.tabbox {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.eltab{
-    width: 800px;
-    height: 800px;
+.eltab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 800px;
+  height: 800px;
 }
 </style>

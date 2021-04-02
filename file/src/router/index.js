@@ -17,16 +17,16 @@ export default new Router({
         import(/* webpackChunkName: "HelloWorld" */ "@/components/HelloWorld")
     },
     {
-      path: "/xlvue",
-      name: "xlvue",
+      path: "/Xjlist",
+      name: "Xjlist",
       component: () =>
-        import(/* webpackChunkName: "xlvue" */ "@/components/xlvue")
+        import(/* webpackChunkName: "xlvue" */ "@/components/Xjlist")
     },
     {
-      path: "/xlsvue",
-      name: "xlsvue",
+      path: "/xls",
+      name: "xls",
       component: () =>
-        import(/* webpackChunkName: "xlvue" */ "@/components/xlsvue")
+        import(/* webpackChunkName: "xlvue" */ "@/components/xls")
     }
   ]
 });

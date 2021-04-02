@@ -1,4 +1,10 @@
-<!--  -->
+<!--
+先获取文件信息
+根据信息查询 文件相同信息
+插入到 order表中
+获取到order中的id
+将id 和device 插入到705表中
+  -->
 <template>
   <div class="box">
     <div class="content">
