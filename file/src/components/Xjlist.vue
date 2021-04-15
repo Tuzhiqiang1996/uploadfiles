@@ -80,7 +80,7 @@ export default {
     arraylist(e) {
       let list = e.replace(/([.\n\r]+)/g, ",");
       let lista = list.split(",");
-      // console.log("list", lista);
+      console.log("list", lista);
 
       this.datalists(lista, this.orderid);
     },
@@ -101,7 +101,7 @@ export default {
           checkDatetime: "",
           createTime: "",
           checkCount: "",
-          orderId: 28,
+          orderId: 29,
           packages: "",
           packageDatetime: "",
         };

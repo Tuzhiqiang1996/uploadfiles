@@ -3,6 +3,7 @@ package com.example.controller;
 import cn.hutool.core.bean.BeanUtil;
 import com.example.common.lang.Result;
 import com.example.entity.Savefile;
+import com.example.entity.Tylist;
 import com.example.entity.Xjlist;
 import com.example.service.XjlistService;
 import lombok.Data;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -40,6 +42,25 @@ public class XjlistController {
         return Result.succ("插入成功！", savefile);
     }
 
+    @PostMapping("/xjreceivefilehas")
+//    public Result receivefilehas( @RequestParam(value = "id",required = false) Integer id, @RequestParam(value = "savefiles",required = false) List<String> savefiles) {
+    public Result tyreceivefilehas(@RequestBody HashMap<String, Object> map) {
+        // 接收List
+        List<Xjlist> savefiledata = (List<Xjlist>) map.get("savefiles");
+        // 接收另外一个参数
+        Integer id = (Integer) map.get("id");
+        List<Xjlist> savefiles = new ArrayList<>(savefiledata);
+        for (int i = 0; i < savefiledata.size(); i++) {
+
+            Xjlist savefile = new Xjlist();
+            savefile.setOrderId(id);
+            savefile.setDeviceid(String.valueOf(savefiledata.get(i)));
+            BeanUtil.copyProperties(savefiledata.get(i), savefile, "order_id", "deviceid");
+//            System.out.println(savefile);
+            xjlistService.saveOrUpdate(savefile);
+        }
+        return Result.succ("插入成功！");
+    }
     @PostMapping("/getfiles")
     public Result getfiles(MultipartFile file) {
 

@@ -13,20 +13,6 @@
         <el-radio v-model="radio" label="2">涂鸦云</el-radio>
         <el-radio v-model="radio" label="3">小匠</el-radio>
       </div>
-      <div style="padding-top: 25px">
-        <el-form :inline="true" :model="formInline" class="demo-form-inline">
-          <el-form-item label="订单号">
-            <el-input
-              v-model="formInline.ordernumber"
-              placeholder="订单号"
-            ></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">查询</el-button>
-            <el-button type="primary" @click="savelistbtn">插入</el-button>
-          </el-form-item>
-        </el-form>
-      </div>
       <el-upload
         class="upload-demo"
         drag
@@ -42,12 +28,8 @@
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
       </el-upload>
       <div>
-        <el-button size="medium" type="primary" @click="btn"
-          >获取orderID</el-button
-        >
-        <el-button size="medium" type="primary" @click="btnorder"
-          >插入order表</el-button
-        >
+        <el-button size="medium" @click="btn">获取orderID</el-button>
+        <el-button size="medium" @click="btnorder">插入order表</el-button>
         <el-button size="medium" @click="btns">插入devlist表</el-button>
       </div>
     </div>
@@ -66,7 +48,7 @@ export default {
   data() {
     //这里存放数据
     return {
-      radio: "1",
+      radio:"1",
       fileList: [],
       ee: "",
       name: "",
@@ -75,9 +57,6 @@ export default {
       num: "",
       orderid: "",
       datadevlist: [],
-      formInline: {
-        ordernumber: "",
-      },
     };
   },
   //监听属性 类似于data概念
@@ -86,27 +65,6 @@ export default {
   watch: {},
   //方法集合
   methods: {
-    onSubmit() {
-      let name = this.formInline.ordernumber;
-      let file1 = name.split(".");
-      let file2 = file1[0].split("_");
-      let num = file2[2];
-      let file3 = file2[0] + "_" + file2[1] + "_" + file2[2];
-
-      this.getorder(file2[0]);
-      this.info.orderNumber = file3;
-    },
-    savelistbtn() {
-      if (this.info.orderNumber) {
-        this.orderlist();
-      } else {
-        this.$message({
-          message: "请先上传文件！",
-          showClose: true,
-          type: "error",
-        });
-      }
-    },
     handleChange(file, fileList) {
       //   this.fileList = file.raw;
       this.fileList = fileList.slice(-1);
@@ -130,7 +88,6 @@ export default {
         return;
       }
     },
-    //解析文件名
     btn() {
       let flie = this.name;
       if (!flie) {
@@ -152,21 +109,6 @@ export default {
       this.filename = file3;
       this.num = num;
     },
-    //插入表中 order
-    btnorder() {
-      let flie = this.name;
-
-      if (!flie) {
-        this.$message({
-          message: "请先上传文件！",
-          showClose: true,
-          type: "error",
-        });
-        return;
-      }
-      this.info.orderNumber = this.filename;
-      this.orderlist();
-    },
     //获取相同类型额 id order
     getorder(order) {
       let url = "http://localhost:8081/getlistnumber?orderNumber=";
@@ -175,7 +117,7 @@ export default {
         .then((res) => {
           if (res.data.code == 200) {
             this.info = res.data.data[0];
-            // this.info.orderNumber = this.filename;
+            this.info.orderNumber = this.filename;
             this.info.info = this.num;
             this.info.id = "";
             console.log("dd", res.data.data[0]);
@@ -201,9 +143,18 @@ export default {
           });
         });
     },
-
     //插入表中 order
-    orderlist() {
+    btnorder() {
+      let flie = this.name;
+
+      if (!flie) {
+        this.$message({
+          message: "请先上传文件！",
+          showClose: true,
+          type: "error",
+        });
+        return;
+      }
       let url = "http://localhost:8081/saveorderfile";
 
       this.$axios
@@ -211,8 +162,6 @@ export default {
         .then((res) => {
           if (res.data.code == 200) {
             this.orderid = res.data.data.id;
-            console.log("dd", this.orderid);
-
             this.$message({
               message: res.data.msg,
               showClose: true,
@@ -252,44 +201,8 @@ export default {
       let lista = list.split(",");
       // console.log("list", lista);
 
-      if (this.radio == 1) {
-        this.datalists(lista, this.orderid);
-      } else {
-        this.datatylist(lista, this.orderid);
-      }
+      this.datalists(lista, this.orderid);
     },
-    //涂鸦 2
-    datatylist(lista, id) {
-      let datalist = {};
-      let datalist4 = {};
-      let datalist2 = [];
-      let datalist3 = [];
-      for (let i = 0; i < lista.length; i++) {
-        datalist = {
-          deviceid: "",
-          sn: lista[i],
-          addr1: "",
-          addr2: "",
-          testResult: "",
-          testDatetime: "",
-          checkDatetime: "",
-          createTime: "",
-          checkCount: "",
-          orderId: this.orderid,
-          packages: "",
-          packageDatetime: "",
-        };
-        datalist4 = lista[i];
-        datalist2.push(datalist);
-        datalist3.push(datalist4);
-        // console.log("12", datalist2);  得到的数组
-      }
-      //1
-      this.refile(datalist2);
-      //2
-      // this.filehas(datalist3);
-    },
-    //酷宅 1
     datalists(lista, id) {
       let datalist = {};
       let datalist4 = {};
@@ -299,33 +212,41 @@ export default {
         datalist = {
           deviceid: lista[i],
           sn: "",
-          addr1: " ",
-          addr2: " ",
+          addr1: "",
+          addr2: "",
           testResult: "",
           testDatetime: "",
           checkResult: "",
           checkDatetime: "",
           checkCount: "",
-          orderId: this.orderid,
+          orderId: "",
         };
+        //  deviceid: lista[i],
+        // sn: "",
+        // addr1: "",
+        // addr2: "",
+        // testResult: "",
+        // testDatetime: "",
+        // checkResult: "",
+        // checkDatetime: "",
+        // createTime: "",
+        // checkCount: "",
+        // orderId: 29,
+        // packages: "",
+        // packageDatetime: "",
         datalist4 = lista[i];
         datalist2.push(datalist);
         datalist3.push(datalist4);
         // console.log("12", datalist2);  得到的数组
       }
       //1
-      this.refile(datalist2);
+      // this.refile(datalist2);
       //2
-      // this.filehas(datalist3);
+      this.filehas(datalist3);
     },
     // 第一方法 执行成功
     refile(e) {
-      let url =
-        this.radio == 1
-          ? "http://localhost:8081/receivefile"
-          : this.radio == 2
-          ? "http://localhost:8081/tyreceivefile"
-          : "http://localhost:8081/xjlist";
+      let url = "http://localhost:8081/receivefile";
 
       this.$axios
         .post(url, e, {
@@ -360,15 +281,10 @@ export default {
     },
     //第二套方法
     filehas(e) {
-      let url =
-        this.radio == 1
-          ? "http://localhost:8081/receivefilehas"
-          : this.radio == 2
-          ? "http://localhost:8081/tyreceivefilehas"
-          : "http://localhost:8081/xjreceivefilehas";
+      let url = "http://localhost:8081/receivefilehas";
       let params = {
         savefiles: e,
-        id: this.orderid,
+        id: 29,
       };
 
       this.$axios
@@ -402,7 +318,7 @@ export default {
         });
     },
     btns() {
-      this.isfile();
+      // this.isfile();
       this.$refs.upload.submit();
     },
   },
@@ -432,9 +348,6 @@ export default {
   text-align: center;
   display: flex;
   flex-flow: column;
-  >>> .el-form-item {
-    margin: 0;
-  }
 }
 .upload-demo {
   display: flex;

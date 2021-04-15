@@ -14,15 +14,16 @@ import java.time.LocalDateTime;
 /**
  * @author Tu
  * @Package com.example.entity
- * @date 2021/4/1-10:19
+ * @date 2021/4/15-10:19
+ * 涂鸦 re755 表
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("tb_device_list_xiaojiang")
+@TableName("tb_device_list_re755")
 
 
-public class Xjlist implements Serializable {
+public class Tylist implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,7 +41,7 @@ public class Xjlist implements Serializable {
     private Integer testResult;
     private LocalDateTime testDatetime;
     private LocalDateTime packageDatetime;
-    @TableField("tb_device_list_xiaojiang.package")
+    @TableField("tb_device_list_re755.package")
     private Integer packages;
     private LocalDateTime checkDatetime;
     private Integer checkCount;

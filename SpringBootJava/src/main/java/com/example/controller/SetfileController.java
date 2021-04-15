@@ -19,13 +19,21 @@ import java.util.List;
  * @author Tu
  * @Package com.example.controller
  * @date 2021/3/30-15:12
+ *
  */
 @Data
 @RestController
 public class SetfileController {
     @Autowired
     SetfileService setfileService;
-
+/**
+ * [java.lang.String]
+ * @author Tu
+ * @date 2021/4/15 16:12
+ * @message
+ * @return com.example.common.lang.Result
+ * 查询类似的
+ */
     @GetMapping("getlistnumber")
     public Result getlistnumber(String orderNumber) {
 
@@ -64,5 +72,8 @@ public class SetfileController {
 
         return Result.succ("查询成功！", files);
     }
-
+    @PostMapping("/saveorderlist")
+    public Result savelist(@RequestBody Setfile setfile){
+        return Result.succ("插入数据成功！");
+    }
 }

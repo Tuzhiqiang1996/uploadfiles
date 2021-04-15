@@ -3,7 +3,9 @@ package com.example.controller;
 import cn.hutool.core.bean.BeanUtil;
 import com.example.common.lang.Result;
 import com.example.entity.Savefile;
+import com.example.entity.Tylist;
 import com.example.service.SavefileService;
+import com.example.service.TylistService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,13 +20,12 @@ import java.util.List;
  * @author Tu
  * @Package com.example.controller
  * @date 2021/3/30-15:12
- * 批量插入数据 1000上限
  */
 @Data
 @RestController
-public class SavefileController {
+public class TyfileController {
     @Autowired
-    SavefileService savefileService;
+    TylistService tylistService;
 /**
  * [java.util.HashMap<java.lang.String,java.lang.Object>]
  * @author Tu
@@ -44,22 +45,22 @@ public class SavefileController {
  * @return com.example.common.lang.Result
  */
 
-@PostMapping("/receivefilehas")
+@PostMapping("/tyreceivefilehas")
 //    public Result receivefilehas( @RequestParam(value = "id",required = false) Integer id, @RequestParam(value = "savefiles",required = false) List<String> savefiles) {
-public Result receivefilehas(@RequestBody HashMap<String, Object> map) {
+public Result tyreceivefilehas(@RequestBody HashMap<String, Object> map) {
     // 接收List
-    List<Savefile> savefiledata = (List<Savefile>) map.get("savefiles");
+    List<Tylist> savefiledata = (List<Tylist>) map.get("savefiles");
     // 接收另外一个参数
     Integer id = (Integer) map.get("id");
-    List<Savefile> savefiles = new ArrayList<>(savefiledata);
+    List<Tylist> savefiles = new ArrayList<>(savefiledata);
     for (int i = 0; i < savefiledata.size(); i++) {
 
-        Savefile savefile = new Savefile();
+        Tylist savefile = new Tylist();
         savefile.setOrderId(id);
         savefile.setDeviceid(String.valueOf(savefiledata.get(i)));
         BeanUtil.copyProperties(savefiledata.get(i), savefile, "order_id", "deviceid");
 //            System.out.println(savefile);
-        savefileService.saveOrUpdate(savefile);
+        tylistService.saveOrUpdate(savefile);
     }
     return Result.succ("插入成功！");
 }
@@ -74,18 +75,18 @@ public Result receivefilehas(@RequestBody HashMap<String, Object> map) {
  *
  * @return com.example.common.lang.Result
  */
-    @PostMapping("/receivefile")
-    public Result receivefile(@RequestBody List<Savefile> savefiles) {
+    @PostMapping("/tyreceivefile")
+    public Result tyreceivefile(@RequestBody List<Tylist> savefiles) {
         if (savefiles.size() == 0 || savefiles == null) {
             return Result.fail("插入数据为空！");
         }
-        Savefile savefile = new Savefile();
-        List<Savefile> savefileList = new ArrayList<>(savefiles);
+        Tylist savefile = new Tylist();
+        List<Tylist> savefileList = new ArrayList<>(savefiles);
         for (int i = 0; i < savefileList.size(); i++) {
             BeanUtil.copyProperties((savefiles.get(i)), savefile);
             //System.out.println(savefileList.get(i).getDeviceid());
             //System.out.println(savefile);
-            savefileService.saveOrUpdate(savefile);
+            tylistService.saveOrUpdate(savefile);
         }
         return Result.succ("插入成功！", savefile);
     }

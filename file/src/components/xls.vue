@@ -4,6 +4,7 @@
     <el-upload
        class="upload-demo"
       drag
+      accept=".xls, .xlsx"
       :limit="limitNum"
       :auto-upload="false"
       :action="UploadUrl()"
