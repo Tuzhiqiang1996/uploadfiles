@@ -15,15 +15,15 @@
       </div>
       <div style="padding-top: 25px">
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
-          <el-form-item label="订单号">
+          <el-form-item label="订单号：">
             <el-input
               v-model="formInline.ordernumber"
-              placeholder="订单号"
+              placeholder="例：B02-F_WTW-SNL-02_170"
             ></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit">查询</el-button>
-            <el-button type="primary" @click="savelistbtn">插入</el-button>
+            <el-button type="primary" @click="savelistbtn" :disabled="isdisabled">插入</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -78,6 +78,7 @@ export default {
       formInline: {
         ordernumber: "",
       },
+      isdisabled:true ,  // 是否查询到
     };
   },
   //监听属性 类似于data概念
@@ -87,17 +88,27 @@ export default {
   //方法集合
   methods: {
     onSubmit() {
+      if (!this.formInline.ordernumber) {
+        this.$message({
+          message: "文件名为空或者上传文件！",
+          showClose: true,
+          type: "error",
+        });
+        return;
+      }
       let name = this.formInline.ordernumber;
       let file1 = name.split(".");
       let file2 = file1[0].split("_");
       let num = file2[2];
-      let file3 = file2[0] + "_" + file2[1] + "_" + file2[2];
+      let file3 = file2[0] + "_" + file2[1]||"" + "_" + file2[2]||"";
 
       this.getorder(file2[0]);
-      this.info.orderNumber = file3;
+      this.num = num;
+      this.filename = file3;
     },
     savelistbtn() {
       if (this.info.orderNumber) {
+        this.info.orderNumber = this.filename;
         this.orderlist();
       } else {
         this.$message({
@@ -130,7 +141,7 @@ export default {
         return;
       }
     },
-    //解析文件名
+    //解析、查询文件名
     btn() {
       let flie = this.name;
       if (!flie) {
@@ -144,7 +155,7 @@ export default {
       let file1 = flie.split(".");
       let file2 = file1[0].split("_");
       let num = file2[2];
-      let file3 = file2[0] + "_" + file2[1] + "_" + file2[2];
+       let file3 = file2[0] + "_" + file2[1]||"" + "_" + file2[2]||"";
 
       this.getorder(file2[0]);
 
@@ -152,7 +163,7 @@ export default {
       this.filename = file3;
       this.num = num;
     },
-    //插入表中 order
+    //插入表中事件 order
     btnorder() {
       let flie = this.name;
 
@@ -178,6 +189,7 @@ export default {
             // this.info.orderNumber = this.filename;
             this.info.info = this.num;
             this.info.id = "";
+            this.isdisabled=false
             console.log("dd", res.data.data[0]);
 
             this.$message({
