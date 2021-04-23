@@ -23,7 +23,12 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit">查询</el-button>
-            <el-button type="primary" @click="savelistbtn" :disabled="isdisabled">插入</el-button>
+            <el-button
+              type="primary"
+              @click="savelistbtn"
+              :disabled="isdisabled"
+              >插入</el-button
+            >
           </el-form-item>
         </el-form>
       </div>
@@ -78,7 +83,7 @@ export default {
       formInline: {
         ordernumber: "",
       },
-      isdisabled:true ,  // 是否查询到
+      isdisabled: true, // 是否查询到
     };
   },
   //监听属性 类似于data概念
@@ -100,7 +105,14 @@ export default {
       let file1 = name.split(".");
       let file2 = file1[0].split("_");
       let num = file2[2];
-      let file3 = file2[0] + "_" + file2[1]||"" + "_" + file2[2]||"";
+      let file3;
+      if (file2[1]) {
+        file3 = file2[0] + "_" + file2[1];
+        if (file2[2]) {
+          file3 = file2[0] + "_" + file2[1] + "_" + file2[2];
+        }
+      }
+      console.log("e", file3, num);
 
       this.getorder(file2[0]);
       this.num = num;
@@ -130,17 +142,6 @@ export default {
       this.name = file.name;
       console.log(file.name);
     },
-    isfile() {
-      let flie = this.name;
-      if (!flie) {
-        this.$message({
-          message: "请先上传文件！",
-          showClose: true,
-          type: "error",
-        });
-        return;
-      }
-    },
     //解析、查询文件名
     btn() {
       let flie = this.name;
@@ -155,7 +156,7 @@ export default {
       let file1 = flie.split(".");
       let file2 = file1[0].split("_");
       let num = file2[2];
-       let file3 = file2[0] + "_" + file2[1]||"" + "_" + file2[2]||"";
+      let file3 = file2[0] + "_" + file2[1] || "" + "_" + file2[2] || "";
 
       this.getorder(file2[0]);
 
@@ -189,7 +190,7 @@ export default {
             // this.info.orderNumber = this.filename;
             this.info.info = this.num;
             this.info.id = "";
-            this.isdisabled=false
+            this.isdisabled = false;
             console.log("dd", res.data.data[0]);
 
             this.$message({
@@ -224,7 +225,6 @@ export default {
           if (res.data.code == 200) {
             this.orderid = res.data.data.id;
             console.log("dd", this.orderid);
-
             this.$message({
               message: res.data.msg,
               showClose: true,
@@ -270,7 +270,7 @@ export default {
         this.datatylist(lista, this.orderid);
       }
     },
-    //涂鸦 2
+    //涂鸦 2 小匠
     datatylist(lista, id) {
       let datalist = {};
       let datalist4 = {};
@@ -370,7 +370,7 @@ export default {
           });
         });
     },
-    //第二套方法
+    //第二套方法 可行
     filehas(e) {
       let url =
         this.radio == 1
@@ -414,7 +414,15 @@ export default {
         });
     },
     btns() {
-      this.isfile();
+      let flie = this.name;
+      if (!flie) {
+        this.$message({
+          message: "请先上传文件！",
+          showClose: true,
+          type: "error",
+        });
+        return;
+      }
       this.$refs.upload.submit();
     },
   },

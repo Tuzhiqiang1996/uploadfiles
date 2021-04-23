@@ -5,10 +5,10 @@
       <el-tab-pane label="上传CSV 酷宅云" name="1" class="eltab">
         <HelloWorld />
       </el-tab-pane>
-      <el-tab-pane label="上传表格小匠" name="2" class="eltab">
+      <el-tab-pane disabled label="上传表格小匠" name="2" class="eltab">
         <Xjlist
       /></el-tab-pane>
-      <el-tab-pane label=" xls表格" name="4" class="eltab">
+      <el-tab-pane disabled label=" xls表格" name="4" class="eltab">
         <Xls
       /></el-tab-pane>
     </el-tabs>
