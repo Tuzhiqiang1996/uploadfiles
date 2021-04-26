@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.entity.Tylist;
 import com.example.entity.Xjlist;
 
+import java.util.Collection;
+
 /**
  * <p>
  *  Mapper 接口
@@ -13,5 +15,4 @@ import com.example.entity.Xjlist;
  * @since 2021-01-29
  */
 public interface TylistMapper extends BaseMapper<Tylist> {
-
 }

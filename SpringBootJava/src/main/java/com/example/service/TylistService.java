@@ -1,8 +1,13 @@
 package com.example.service;
 
+import com.baomidou.mybatisplus.core.enums.SqlMethod;
+import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.entity.Tylist;
-import com.example.entity.Xjlist;
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,5 +18,7 @@ import com.example.entity.Xjlist;
  * @since 2021-01-29
  */
 public interface TylistService extends IService<Tylist> {
+
+
 
 }

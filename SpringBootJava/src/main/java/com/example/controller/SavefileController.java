@@ -87,6 +87,7 @@ public Result receivefilehas(@RequestBody HashMap<String, Object> map) {
             //System.out.println(savefile);
             savefileService.saveOrUpdate(savefile);
         }
+        savefileService.saveBatch(savefileList);
         return Result.succ("插入成功！", savefile);
     }
 

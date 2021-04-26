@@ -42,6 +42,7 @@
         :file-list="fileList"
         :on-change="handleChange"
         :on-success="success"
+        :http-request="uploadFile"
       >
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -247,16 +248,16 @@ export default {
         });
     },
     success(response, file, fileList) {
-      console.log(response, file, fileList);
-      let reader = new FileReader();
-      reader.readAsText(file.raw);
-      reader.onload = (e) => {
-        this.ee = e.target.result;
-        console.log(e.target.result);
-        this.datadevlist = e.target.result;
-        // this.refile(fileList);
-        this.arraylist(this.datadevlist);
-      };
+      console.log("success", response, file, fileList);
+      // let reader = new FileReader();
+      // reader.readAsText(file.raw);
+      // reader.onload = (e) => {
+      //   this.ee = e.target.result;
+      //   console.log(e.target.result);
+      //   // this.datadevlist = e.target.result;
+
+      //   //  this.arraylist(this.datadevlist);
+      // };
     },
     //格式化数组
     arraylist(e) {
@@ -424,6 +425,17 @@ export default {
         return;
       }
       this.$refs.upload.submit();
+    },
+    //覆盖上传 不走success函数
+    uploadFile(params) {
+      let reader = new FileReader();
+      reader.readAsText(params.file);
+      reader.onload = (e) => {
+        this.ee = e.target.result;
+        console.log(e.target.result);
+        this.datadevlist = e.target.result;
+        this.arraylist(this.datadevlist);
+      };
     },
   },
   //生命周期 - 创建完成（可以访问当前this实例）

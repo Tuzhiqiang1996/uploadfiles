@@ -23,4 +23,6 @@ public class MybatisPlusConfig {
 //        BlogMapper.selectPage(paginationInterceptor,null);
         return paginationInterceptor;
     }
+
+
 }

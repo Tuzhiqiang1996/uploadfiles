@@ -35,10 +35,11 @@ public class XjlistController {
         }
         Xjlist savefile = new Xjlist();
         List<Xjlist> savefileList = new ArrayList<>(xjlists);
-        for (int i = 0; i < savefileList.size(); i++) {
-            BeanUtil.copyProperties((xjlists.get(i)), savefile);
-            xjlistService.saveOrUpdate(savefile);
-        }
+//        for (int i = 0; i < savefileList.size(); i++) {
+//            BeanUtil.copyProperties((xjlists.get(i)), savefile);
+//            xjlistService.saveOrUpdate(savefile);
+//        }
+        xjlistService.saveBatch(savefileList);
         return Result.succ("插入成功！", savefile);
     }
 

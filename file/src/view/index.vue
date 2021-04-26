@@ -11,6 +11,9 @@
       <el-tab-pane disabled label=" xls表格" name="4" class="eltab">
         <Xls
       /></el-tab-pane>
+      <el-tab-pane   label=" xls表格" name="3" class="eltab">
+        <Moredata />
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -21,10 +24,11 @@
 import HelloWorld from "../components/HelloWorld";
 import Xjlist from "../components/Xjlist";
 import Xls from "../components/xls";
+import Moredata from "../components/moredata";
 export default {
   name: "",
   //import引入的组件需要注入到对象中才能使用
-  components: { HelloWorld, Xjlist,   Xls },
+  components: { HelloWorld, Xjlist, Xls, Moredata },
   props: [],
   data() {
     //这里存放数据
