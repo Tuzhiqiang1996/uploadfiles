@@ -101,10 +101,6 @@ public class TyfileController {
          * 1000每次
          */
        tylistService.saveBatch(savefileList);
-
-
-
-
         return Result.succ("插入成功！", savefile);
     }
 

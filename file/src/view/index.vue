@@ -11,7 +11,7 @@
       <el-tab-pane disabled label=" xls表格" name="4" class="eltab">
         <Xls
       /></el-tab-pane>
-      <el-tab-pane   label=" xls表格" name="3" class="eltab">
+      <el-tab-pane   label="多列数据导入" name="3" class="eltab">
         <Moredata />
       </el-tab-pane>
     </el-tabs>

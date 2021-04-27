@@ -13,6 +13,7 @@
         :file-list="fileList"
         :on-change="handleChange"
         :on-success="success"
+        :http-request="uploadFile"
       >
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -73,14 +74,101 @@ export default {
     //上传成功！
     success(response, file, fileList) {
       console.log(response, file, fileList);
+      // let reader = new FileReader();
+      // reader.readAsText(file.raw);
+      // reader.onload = (e) => {
+      //   console.log(e.target.result);
+      //   this.datadevlist = e.target.result;
+      // };
+    },
+    //覆盖上传 不走success函数
+    uploadFile(params) {
       let reader = new FileReader();
-      reader.readAsText(file.raw);
+      reader.readAsText(params.file);
       reader.onload = (e) => {
-        this.ee = e.target.result;
-        console.log(e.target.result);
+        // console.log(e.target.result);
         this.datadevlist = e.target.result;
-
+        this.arraylist();
       };
+    },
+    arraylist() {
+      let datalist = this.datadevlist;
+      let list = datalist.replace(/([.\n\r]+)/g, "#*#");
+      let listsplit = list.split("#*#");
+      console.log("list", listsplit);
+      let listpush = [];
+      for (let index = 0; index < listsplit.length; index++) {
+        let listarry = listsplit[index].split(",");
+        listpush.push(listarry);
+      }
+      console.log("ee", listpush);
+      this.morearrylist(listpush);
+    },
+    morearrylist(data) {
+      let datalist = {};
+      let datalist2 = [];
+      for (let index = 0; index < data.length; index++) {
+        for (let indexs = 0; indexs < data[index].length; indexs++) {
+          datalist = {
+            deviceid: data[index][3],
+            sn: data[index][0],
+            addr1: data[index][1],
+            addr2: data[index][2],
+            testResult: "",
+            testDatetime: "",
+            checkDatetime: "",
+            createTime: "",
+            checkCount: "",
+            orderId: this.orderid,
+            packages: "",
+            packageDatetime: "",
+          };
+        }
+        datalist2.push(datalist);
+      }
+      console.log("morearry", datalist2);
+      this.refile(datalist2);
+    },
+    /**
+     * 导入须知
+     * 确保文件格式为.csv
+     * 内容不存在中文
+     * 导入对应的属性均为字符串格式
+     * 其他待优化中
+     */
+    refile(e) {
+      let url = "http://localhost:8081/xjlist";
+
+      this.$axios
+        .post(url, e, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data.code == 200) {
+            this.$message({
+              message: res.data.msg,
+              showClose: true,
+              type: "success",
+            });
+          } else {
+            this.$message({
+              message: res.data.msg,
+              showClose: true,
+              type: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          this.$message({
+            message: err,
+            showClose: true,
+            type: "error",
+          });
+        });
     },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
@@ -98,11 +186,11 @@ export default {
 </script>
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
-.morebox{
+.morebox {
   text-align: center;
 }
-.upload-demo{
-   display: flex;
+.upload-demo {
+  display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
